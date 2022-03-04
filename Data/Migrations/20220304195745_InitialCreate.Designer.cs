@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(CommerceDataContext))]
-    [Migration("20220226234824_InitialCreate")]
+    [Migration("20220304195745_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,9 @@ namespace API.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric(10,2)");
 
+                    b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Sku")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -80,7 +83,33 @@ namespace API.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ProductTypeId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API.Entities.ProductType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
@@ -91,10 +120,36 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("API.Entities.ProductType", b =>
+                {
+                    b.HasOne("API.Entities.Category", "Category")
+                        .WithMany("ProductTypes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
                 });
 
             modelBuilder.Entity("API.Entities.Category", b =>
+                {
+                    b.Navigation("ProductTypes");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("API.Entities.ProductType", b =>
                 {
                     b.Navigation("Products");
                 });
