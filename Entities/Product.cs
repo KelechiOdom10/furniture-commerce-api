@@ -19,6 +19,8 @@ public class Product : BaseEntity
     [DefaultValue(true)]
     public bool IsAvailable { get; set; }
 
+    public Guid ProductTypeId { get; set; }
+    public ProductType? ProductType { get; set; }
     public Guid CategoryId { get; set; }
     public virtual Category? Category { get; set; }
 }

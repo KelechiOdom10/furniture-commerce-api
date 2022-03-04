@@ -14,4 +14,5 @@ public class Category : BaseEntity
     public string Description { get; set; } = string.Empty;
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public virtual ICollection<ProductType> ProductTypes { get; set; } = new List<ProductType>();
 }

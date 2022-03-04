@@ -6,7 +6,7 @@ using API.Entities;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/categories")]
+[Route("api/category")]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _categoryRepository;
@@ -22,10 +22,10 @@ public class CategoryController : ControllerBase
         return Ok(await _categoryRepository.GetCategoriesAsync());
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategory(Guid id)
+    [HttpGet("{name}")]
+    public async Task<ActionResult<Category>> GetCategory(string name)
     {
-        var category = await _categoryRepository.GetCategoryByIdAsync(id);
+        var category = await _categoryRepository.GetCategoryByNameAsync(name);
         if (category == null)
             return NotFound();
 
@@ -39,7 +39,9 @@ public class CategoryController : ControllerBase
         if (categoryExists != null)
             return Conflict("Category already exists");
 
-        await _categoryRepository.AddCategoryAsync(category);
+        bool result = await _categoryRepository.AddCategoryAsync(category);
+        if (!result) return BadRequest();
+
         return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
     }
 
