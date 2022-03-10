@@ -38,7 +38,7 @@ public class ProductTypeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductType>> AddProductType([FromBody] ProductTypeCreateDto productTypeDto)
+    public async Task<ActionResult<ProductTypeReadDto>> AddProductType([FromBody] ProductTypeCreateDto productTypeDto)
     {
         var productTypeExists = await _productTypeRepository.GetProductTypeByNameAsync(productTypeDto.Name);
         if (productTypeExists != null)
