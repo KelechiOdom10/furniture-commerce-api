@@ -1,76 +1,82 @@
 
+using API.DTOs.ProductType;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace commerceAPI.Controllers;
+namespace API.Controllers;
 
 [ApiController]
 [Route("api/productType")]
 public class ProductTypeController : ControllerBase
 {
     private readonly IProductTypeRepository _productTypeRepository;
+    private readonly IMapper _mapper;
 
-    public ProductTypeController(IProductTypeRepository productTypeRepository)
+    public ProductTypeController(IProductTypeRepository productTypeRepository, IMapper mapper)
     {
         _productTypeRepository = productTypeRepository;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+    public async Task<ActionResult<IReadOnlyList<ProductTypeReadDto>>> GetProductTypes()
     {
-        return Ok(await _productTypeRepository.GetProductTypesAsync());
+        var productTypes = await _productTypeRepository.GetProductTypesAsync();
+        return Ok(_mapper.Map<IReadOnlyList<ProductTypeReadDto>>(productTypes));
     }
 
     [HttpGet("{name}")]
-    public async Task<ActionResult<ProductType>> GetProductType(string name)
+    public async Task<ActionResult<ProductTypeDetailDto>> GetProductType(string name)
     {
         var productType = await _productTypeRepository.GetProductTypeByNameAsync(name);
         if (productType == null)
             return NotFound();
 
-        return Ok(productType);
+        return Ok(_mapper.Map<ProductTypeDetailDto>(productType));
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductType>> AddProductType([FromBody] ProductType productType)
+    public async Task<ActionResult<ProductTypeReadDto>> AddProductType([FromBody] ProductTypeCreateDto productTypeDto)
     {
-        var productTypeExists = await _productTypeRepository.GetProductTypeByNameAsync(productType.Name);
+        var productTypeExists = await _productTypeRepository.GetProductTypeByNameAsync(productTypeDto.Name);
         if (productTypeExists != null)
             return Conflict("Product type already exists");
 
-        bool result = await _productTypeRepository.AddProductTypeAsync(productType);
+        var productType = _mapper.Map<ProductType>(productTypeDto);
+        var result = await _productTypeRepository.AddProductTypeAsync(productType);
         if (!result) return BadRequest();
 
         return CreatedAtAction(nameof(GetProductTypes), new { id = productType.Id }, productType);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProductType(Guid id, [FromBody] ProductType productType)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateProductType(Guid id, [FromBody] ProductTypeUpdateDto productTypeDto)
     {
-        if (id != productType.Id)
+        if (id != productTypeDto.Id)
             return BadRequest();
 
         var productTypeFromDb = await _productTypeRepository.GetProductTypeByIdAsync(id);
         if (productTypeFromDb == null)
             return NotFound();
 
-        productTypeFromDb.Name = productType.Name;
+        _mapper.Map(productTypeDto, productTypeFromDb);
 
-        bool result = await _productTypeRepository.UpdateProductTypeAsync(productTypeFromDb);
+        var result = await _productTypeRepository.UpdateProductTypeAsync(productTypeFromDb);
         if (!result) return BadRequest();
 
         return Ok(productTypeFromDb);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteProductType(Guid id)
     {
         var productType = await _productTypeRepository.GetProductTypeByIdAsync(id);
         if (productType == null)
             return NotFound();
 
-        bool result = await _productTypeRepository.DeleteProductTypeByIdAsync(id);
+        var result = await _productTypeRepository.DeleteProductTypeByIdAsync(id);
         if (!result) return BadRequest();
 
         return NoContent();

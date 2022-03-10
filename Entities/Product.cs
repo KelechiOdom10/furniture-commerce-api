@@ -14,7 +14,7 @@ public class Product : BaseEntity
     [Required]
     public string Description { get; set; } = string.Empty;
     [DefaultValue(0)]
-    [Column(TypeName = "decimal(10, 2)")]
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
     [DefaultValue(true)]
     public bool IsAvailable { get; set; }

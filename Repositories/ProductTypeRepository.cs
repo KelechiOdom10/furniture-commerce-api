@@ -4,6 +4,7 @@ using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories;
+
 public class ProductTypeRepository : IProductTypeRepository
 {
     private readonly CommerceDataContext _context;
@@ -15,17 +16,29 @@ public class ProductTypeRepository : IProductTypeRepository
 
     public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
     {
-        return await _context.ProductTypes.ToListAsync();
+        var productTypes = await _context.ProductTypes
+            .Include(p => p.Category)
+            .Include(p => p.Products)
+            .ToListAsync();
+        return productTypes;
     }
 
     public async Task<ProductType> GetProductTypeByIdAsync(Guid id)
     {
-        return await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Id == id);
+        var productType = await _context.ProductTypes
+            .Include(p => p.Category)
+            .Include(p => p.Products)
+            .FirstOrDefaultAsync(p => p.Id == id);
+        return productType;
     }
 
     public async Task<ProductType> GetProductTypeByNameAsync(string name)
     {
-        return await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Name == name);
+        var productType = await _context.ProductTypes
+            .Include(p => p.Category)
+            .Include(p => p.Products)
+            .FirstOrDefaultAsync(p => p.Name == name);
+        return productType;
     }
 
     public async Task<bool> AddProductTypeAsync(ProductType productType)
