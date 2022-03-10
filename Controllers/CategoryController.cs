@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Entities;
-
+using AutoMapper;
+using API.DTOs.Category;
 
 namespace API.Controllers;
 
@@ -10,69 +11,72 @@ namespace API.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryRepository categoryRepository)
+    public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Category>>> GetCategories()
+    public async Task<ActionResult<IReadOnlyList<CategoryReadDto>>> GetCategories()
     {
-        return Ok(await _categoryRepository.GetCategoriesAsync());
+        var categories = await _categoryRepository.GetCategoriesAsync();
+        return Ok(_mapper.Map<IReadOnlyList<CategoryReadDto>>(categories));
     }
 
     [HttpGet("{name}")]
-    public async Task<ActionResult<Category>> GetCategory(string name)
+    public async Task<ActionResult<CategoryDetailDto>> GetCategory(string name)
     {
         var category = await _categoryRepository.GetCategoryByNameAsync(name);
         if (category == null)
             return NotFound();
 
-        return Ok(category);
+        return Ok(_mapper.Map<CategoryDetailDto>(category));
     }
 
     [HttpPost]
-    public async Task<ActionResult<Category>> AddCategory([FromBody] Category category)
+    public async Task<ActionResult<CategoryReadDto>> AddCategory([FromBody] CategoryCreateDto categoryDto)
     {
-        var categoryExists = await _categoryRepository.GetCategoryByNameAsync(category.Name);
+        var categoryExists = await _categoryRepository.GetCategoryByNameAsync(categoryDto.Name);
         if (categoryExists != null)
             return Conflict("Category already exists");
 
-        bool result = await _categoryRepository.AddCategoryAsync(category);
+        var category = _mapper.Map<Category>(categoryDto);
+        var result = await _categoryRepository.AddCategoryAsync(category);
         if (!result) return BadRequest();
 
         return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] Category category)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryUpdateDto categoryDto)
     {
-        if (id != category.Id)
+        if (id != categoryDto.Id)
             return BadRequest();
 
-        var categoryFromDb = await _categoryRepository.GetCategoryByIdAsync(id);
-        if (categoryFromDb == null)
+        var category = await _categoryRepository.GetCategoryByIdAsync(id);
+        if (category == null)
             return NotFound();
 
-        categoryFromDb.Name = category.Name;
-        categoryFromDb.Description = category.Description;
+        _mapper.Map(categoryDto, category);
 
-        bool result = await _categoryRepository.UpdateCategoryAsync(categoryFromDb);
+        var result = await _categoryRepository.UpdateCategoryAsync(category);
         if (!result)
             return BadRequest();
 
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         var category = await _categoryRepository.GetCategoryByIdAsync(id);
         if (category == null)
             return NotFound();
 
-        bool result = await _categoryRepository.DeleteCategoryByIdAsync(id);
+        var result = await _categoryRepository.DeleteCategoryByIdAsync(id);
         if (!result)
             return BadRequest();
 
