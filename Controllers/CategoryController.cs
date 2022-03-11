@@ -44,10 +44,13 @@ public class CategoryController : ControllerBase
             return Conflict("Category already exists");
 
         var category = _mapper.Map<Category>(categoryDto);
-        var result = await _categoryRepository.AddCategoryAsync(category);
-        if (!result) return BadRequest();
 
-        return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
+        var result = await _categoryRepository.AddCategoryAsync(category);
+        if (result is null) return BadRequest();
+
+        var categoryReadDto = _mapper.Map<CategoryReadDto>(result);
+
+        return CreatedAtAction(nameof(GetCategories), new { id = categoryReadDto.Id }, categoryReadDto);
     }
 
     [HttpPut("{id:guid}")]

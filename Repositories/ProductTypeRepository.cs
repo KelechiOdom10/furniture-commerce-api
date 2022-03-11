@@ -41,10 +41,14 @@ public class ProductTypeRepository : IProductTypeRepository
         return productType;
     }
 
-    public async Task<bool> AddProductTypeAsync(ProductType productType)
+    public async Task<ProductType> AddProductTypeAsync(ProductType productType)
     {
         await _context.ProductTypes.AddAsync(productType);
-        return await SaveAsync();
+        var result = await SaveAsync();
+        if (!result) return null;
+
+        var addedProductType = await this.GetProductTypeByIdAsync(productType.Id);
+        return addedProductType;
     }
 
     public async Task<bool> UpdateProductTypeAsync(ProductType productType)

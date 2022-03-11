@@ -40,10 +40,13 @@ public class CategoryRepository : ICategoryRepository
         return category;
     }
 
-    public async Task<bool> AddCategoryAsync(Category category)
+    public async Task<Category> AddCategoryAsync(Category category)
     {
         await _context.Categories.AddAsync(category);
-        return await SaveAsync();
+        var result = await SaveAsync();
+
+        if (!result) return null;
+        return category;
     }
 
     public async Task<bool> UpdateCategoryAsync(Category category)

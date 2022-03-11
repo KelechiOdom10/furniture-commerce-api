@@ -46,9 +46,11 @@ public class ProductTypeController : ControllerBase
 
         var productType = _mapper.Map<ProductType>(productTypeDto);
         var result = await _productTypeRepository.AddProductTypeAsync(productType);
-        if (!result) return BadRequest();
+        if (result is null) return BadRequest();
 
-        return CreatedAtAction(nameof(GetProductTypes), new { id = productType.Id }, productType);
+        var productTypeReadDto = _mapper.Map<ProductTypeReadDto>(result);
+
+        return CreatedAtAction(nameof(GetProductTypes), new { id = productTypeReadDto.Id }, productTypeReadDto);
     }
 
     [HttpPut("{id:guid}")]
