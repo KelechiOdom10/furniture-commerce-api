@@ -5,5 +5,6 @@ namespace API.Entities;
 public class BaseEntity
 {
     [Key]
-    public Guid Id { get; init; }
+    public int Id { get; init; }
+    public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
 }
