@@ -26,10 +26,10 @@ public class CategoryController : ControllerBase
         return Ok(_mapper.Map<IReadOnlyList<CategoryReadDto>>(categories));
     }
 
-    [HttpGet("{name}")]
-    public async Task<ActionResult<CategoryDetailDto>> GetCategory(string name)
+    [HttpGet("{slug}")]
+    public async Task<ActionResult<CategoryDetailDto>> GetCategory(string slug)
     {
-        var category = await _categoryRepository.GetCategoryByNameAsync(name);
+        var category = await _categoryRepository.GetCategoryBySlugAsync(slug);
         if (category == null)
             return NotFound();
 
@@ -39,7 +39,7 @@ public class CategoryController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CategoryReadDto>> AddCategory([FromBody] CategoryCreateDto categoryDto)
     {
-        var categoryExists = await _categoryRepository.GetCategoryByNameAsync(categoryDto.Name);
+        var categoryExists = await _categoryRepository.GetCategoryBySlugAsync(categoryDto.Slug);
         if (categoryExists != null)
             return Conflict("Category already exists");
 
@@ -53,8 +53,8 @@ public class CategoryController : ControllerBase
         return CreatedAtAction(nameof(GetCategories), new { id = categoryReadDto.Id }, categoryReadDto);
     }
 
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryUpdateDto categoryDto)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryUpdateDto categoryDto)
     {
         if (id != categoryDto.Id)
             return BadRequest();
@@ -72,8 +72,8 @@ public class CategoryController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteCategory(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCategory(int id)
     {
         var category = await _categoryRepository.GetCategoryByIdAsync(id);
         if (category == null)
