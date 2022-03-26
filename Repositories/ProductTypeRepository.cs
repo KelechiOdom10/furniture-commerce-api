@@ -23,7 +23,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return productTypes;
     }
 
-    public async Task<ProductType> GetProductTypeByIdAsync(Guid id)
+    public async Task<ProductType> GetProductTypeByIdAsync(int id)
     {
         var productType = await _context.ProductTypes
             .Include(p => p.Category)
@@ -32,19 +32,23 @@ public class ProductTypeRepository : IProductTypeRepository
         return productType;
     }
 
-    public async Task<ProductType> GetProductTypeByNameAsync(string name)
+    public async Task<ProductType> GetProductTypeBySlugAsync(string slug)
     {
         var productType = await _context.ProductTypes
             .Include(p => p.Category)
             .Include(p => p.Products)
-            .FirstOrDefaultAsync(p => p.Name == name);
+            .FirstOrDefaultAsync(p => p.Slug == slug);
         return productType;
     }
 
-    public async Task<bool> AddProductTypeAsync(ProductType productType)
+    public async Task<ProductType> AddProductTypeAsync(ProductType productType)
     {
         await _context.ProductTypes.AddAsync(productType);
-        return await SaveAsync();
+        var result = await SaveAsync();
+        if (!result) return null;
+
+        var addedProductType = await GetProductTypeByIdAsync(productType.Id);
+        return addedProductType;
     }
 
     public async Task<bool> UpdateProductTypeAsync(ProductType productType)
@@ -53,7 +57,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return await SaveAsync();
     }
 
-    public async Task<bool> DeleteProductTypeByIdAsync(Guid id)
+    public async Task<bool> DeleteProductTypeByIdAsync(int id)
     {
         var productType = await _context.ProductTypes.FindAsync(id);
         if (productType == null)

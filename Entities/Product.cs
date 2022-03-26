@@ -6,21 +6,27 @@ namespace API.Entities;
 
 public class Product : BaseEntity
 {
-    [Required]
     [MaxLength(40)]
     public string Sku { get; set; } = string.Empty;
     [Required]
+    public string Slug { get; set; } = string.Empty;
+    [Required]
     public string Name { get; set; } = string.Empty;
     [Required]
+    public string Title { get; set; } = string.Empty;
+    [Required]
     public string Description { get; set; } = string.Empty;
+    public string[] Images { get; set; } = new string[0];
     [DefaultValue(0)]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
+    [DefaultValue(5)]
+    public int Quantity { get; set; }
     [DefaultValue(true)]
     public bool IsAvailable { get; set; }
 
-    public Guid ProductTypeId { get; set; }
+    public int ProductTypeId { get; set; }
     public ProductType? ProductType { get; set; }
-    public Guid CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public virtual Category? Category { get; set; }
 }

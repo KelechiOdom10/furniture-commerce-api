@@ -5,17 +5,22 @@ namespace API.DTOs.Product;
 
 public class ProductUpdateDto : BaseDto
 {
-    [Required]
     [MaxLength(40)]
     public string Sku { get; set; }
     [Required]
+    public string Slug { get; set; }
+    [Required]
     public string Name { get; set; }
     [Required]
+    public string Title { get; set; }
+    [Required]
     public string Description { get; set; }
+    public string[] Images { get; set; }
     [Required]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
+    public int Quantity { get; set; }
     public bool IsAvailable { get; set; }
-    public Guid ProductTypeId { get; set; }
-    public Guid CategoryId { get; set; }
+    public int ProductTypeId { get; set; }
+    public int CategoryId { get; set; }
 }

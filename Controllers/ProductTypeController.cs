@@ -27,10 +27,10 @@ public class ProductTypeController : ControllerBase
         return Ok(_mapper.Map<IReadOnlyList<ProductTypeReadDto>>(productTypes));
     }
 
-    [HttpGet("{name}")]
-    public async Task<ActionResult<ProductTypeDetailDto>> GetProductType(string name)
+    [HttpGet("{slug}")]
+    public async Task<ActionResult<ProductTypeDetailDto>> GetProductType(string slug)
     {
-        var productType = await _productTypeRepository.GetProductTypeByNameAsync(name);
+        var productType = await _productTypeRepository.GetProductTypeBySlugAsync(slug);
         if (productType == null)
             return NotFound();
 
@@ -40,19 +40,21 @@ public class ProductTypeController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ProductTypeReadDto>> AddProductType([FromBody] ProductTypeCreateDto productTypeDto)
     {
-        var productTypeExists = await _productTypeRepository.GetProductTypeByNameAsync(productTypeDto.Name);
+        var productTypeExists = await _productTypeRepository.GetProductTypeBySlugAsync(productTypeDto.Slug);
         if (productTypeExists != null)
             return Conflict("Product type already exists");
 
         var productType = _mapper.Map<ProductType>(productTypeDto);
         var result = await _productTypeRepository.AddProductTypeAsync(productType);
-        if (!result) return BadRequest();
+        if (result is null) return BadRequest();
 
-        return CreatedAtAction(nameof(GetProductTypes), new { id = productType.Id }, productType);
+        var productTypeReadDto = _mapper.Map<ProductTypeReadDto>(result);
+
+        return CreatedAtAction(nameof(GetProductTypes), new { id = productTypeReadDto.Id }, productTypeReadDto);
     }
 
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateProductType(Guid id, [FromBody] ProductTypeUpdateDto productTypeDto)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProductType(int id, [FromBody] ProductTypeUpdateDto productTypeDto)
     {
         if (id != productTypeDto.Id)
             return BadRequest();
@@ -69,8 +71,8 @@ public class ProductTypeController : ControllerBase
         return Ok(productTypeFromDb);
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteProductType(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProductType(int id)
     {
         var productType = await _productTypeRepository.GetProductTypeByIdAsync(id);
         if (productType == null)

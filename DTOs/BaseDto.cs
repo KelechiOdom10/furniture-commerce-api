@@ -2,5 +2,6 @@ namespace API.DTOs;
 
 public class BaseDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }
