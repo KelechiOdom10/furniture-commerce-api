@@ -14,7 +14,7 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public async Task<Category> GetCategoryByIdAsync(Guid id)
+    public async Task<Category> GetCategoryByIdAsync(int id)
     {
         var category = await _context.Categories
             .Include(c => c.Products)
@@ -31,12 +31,12 @@ public class CategoryRepository : ICategoryRepository
         return categories;
     }
 
-    public async Task<Category> GetCategoryByNameAsync(string name)
+    public async Task<Category> GetCategoryBySlugAsync(string slug)
     {
         var category = await _context.Categories
             .Include(c => c.Products)
             .Include(c => c.ProductTypes)
-            .FirstOrDefaultAsync(c => c.Name == name);
+            .FirstOrDefaultAsync(c => c.Slug == slug);
         return category;
     }
 
@@ -55,7 +55,7 @@ public class CategoryRepository : ICategoryRepository
         return await SaveAsync();
     }
 
-    public async Task<bool> DeleteCategoryByIdAsync(Guid id)
+    public async Task<bool> DeleteCategoryByIdAsync(int id)
     {
         var category = await _context.Categories.FindAsync(id);
         if (category == null)
