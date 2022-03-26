@@ -13,6 +13,7 @@ builder.Services.AddDbContext<CommerceDataContext>(options =>
 });
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
