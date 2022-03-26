@@ -20,7 +20,8 @@ public class CommerceProfile : Profile
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
         CreateMap<ProductType, ProductTypeDetailDto>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
+            .ForMember(dest => dest.CategorySlug, opt => opt.MapFrom(src => src.Category.Slug));
         CreateMap<ProductType, ProductTypeUpdateDto>().ReverseMap();
 
         CreateMap<Product, ProductCreateDto>().ReverseMap();
