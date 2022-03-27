@@ -16,7 +16,7 @@ public class Product : BaseEntity
     public string Title { get; set; } = string.Empty;
     [Required]
     public string Description { get; set; } = string.Empty;
-    public string[] Images { get; set; } = new string[0];
+    public ICollection<string> Images { get; set; } = new List<string>();
     [DefaultValue(0)]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }

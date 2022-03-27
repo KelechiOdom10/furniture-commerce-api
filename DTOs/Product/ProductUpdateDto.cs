@@ -15,7 +15,7 @@ public class ProductUpdateDto : BaseDto
     public string Title { get; set; }
     [Required]
     public string Description { get; set; }
-    public string[] Images { get; set; }
+    public ICollection<string> Images { get; set; }
     [Required]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }

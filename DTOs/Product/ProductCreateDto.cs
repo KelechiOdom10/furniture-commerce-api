@@ -16,7 +16,7 @@ public class ProductCreateDto
     public string Title { get; set; }
     [Required]
     public string Description { get; set; }
-    public string[] Images { get; set; }
+    public ICollection<string> Images { get; set; }
     [Required]
     [DefaultValue(0)]
     [Column(TypeName = "decimal(18, 2)")]
