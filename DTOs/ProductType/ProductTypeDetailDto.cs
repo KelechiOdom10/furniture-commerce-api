@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using API.DTOs.Product;
 
 namespace API.DTOs.ProductType;
 
 public class ProductTypeDetailDto : ProductTypeReadDto
 {
-    public string CategorySlug { get; set; }
-    public ICollection<ProductReadDto> Products { get; set; }
+    [Required]
+    public string CategorySlug { get; set; } = String.Empty;
+    public ICollection<ProductReadDto> Products { get; set; } = new List<ProductReadDto>();
 }

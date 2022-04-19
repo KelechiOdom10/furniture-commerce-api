@@ -7,9 +7,11 @@ public class ProductTypeCreateDto
 {
     [Required]
     [MaxLength(40)]
-    public string Name { get; set; }
+    public string Name { get; set; } = String.Empty;
     [Required]
-    public string Slug { get; set; }
-    public string ImageUrl { get; set; }
+    public string Slug { get; set; } = String.Empty;
+    [Required]
+    public string ImageUrl { get; set; } = String.Empty;
+    [Required]
     public int CategoryId { get; set; }
 }

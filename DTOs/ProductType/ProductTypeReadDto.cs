@@ -1,9 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.DTOs.ProductType;
 
 public class ProductTypeReadDto : BaseDto
 {
-    public string Name { get; set; }
-    public string CategoryName { get; set; }
-    public string Slug { get; set; }
-    public string ImageUrl { get; set; }
+    [Required]
+    public string Name { get; set; } = String.Empty;
+    [Required]
+    public string CategoryName { get; set; } = String.Empty;
+    [Required]
+    public string Slug { get; set; } = String.Empty;
+    [Required]
+    public string ImageUrl { get; set; } = String.Empty;
+
 }

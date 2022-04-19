@@ -7,23 +7,26 @@ namespace API.DTOs.Product;
 public class ProductCreateDto
 {
     [MaxLength(40)]
-    public string Sku { get; set; }
+    public string Sku { get; set; } = String.Empty;
     [Required]
-    public string Slug { get; set; }
+    public string Slug { get; set; } = String.Empty;
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = String.Empty;
     [Required]
-    public string Title { get; set; }
+    public string Title { get; set; } = String.Empty;
     [Required]
-    public string Description { get; set; }
-    public ICollection<string> Images { get; set; }
+    public string Description { get; set; } = String.Empty;
+    public ICollection<string> Images { get; set; } = new List<string>();
     [Required]
     [DefaultValue(0)]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
+    [Required]
     public int Quantity { get; set; }
     [DefaultValue(true)]
     public bool IsAvailable { get; set; }
+    [Required]
     public int ProductTypeId { get; set; }
+    [Required]
     public int CategoryId { get; set; }
 }
