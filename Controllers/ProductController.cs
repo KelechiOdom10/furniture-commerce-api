@@ -27,13 +27,13 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{slug}")]
-    public async Task<ActionResult<ProductReadDto>> GetProduct(string slug)
+    public async Task<ActionResult<ProductDetailDto>> GetProduct(string slug)
     {
         var product = await _productRepository.GetProductBySlugAsync(slug);
         if (product == null)
             return NotFound();
 
-        return Ok(_mapper.Map<ProductReadDto>(product));
+        return Ok(_mapper.Map<ProductDetailDto>(product));
     }
 
     [HttpPost]
