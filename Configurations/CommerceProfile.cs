@@ -17,6 +17,7 @@ public class CommerceProfile : Profile
 
         CreateMap<ProductType, ProductTypeCreateDto>().ReverseMap();
         CreateMap<ProductType, ProductTypeReadDto>()
+            .ForMember(dest => dest.CategorySlug, opt => opt.MapFrom(src => src.Category.Slug))
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
         CreateMap<ProductType, ProductTypeDetailDto>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
@@ -26,9 +27,10 @@ public class CommerceProfile : Profile
 
         CreateMap<Product, ProductCreateDto>().ReverseMap();
         CreateMap<Product, ProductReadDto>()
-            .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name))
-            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.ProductType.Category.Name))
+            .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0]));
-        CreateMap<Product, ProductDetailDto>().ReverseMap();
+        CreateMap<Product, ProductDetailDto>()
+            .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0])); ;
     }
 }

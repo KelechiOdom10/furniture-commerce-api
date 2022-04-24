@@ -26,7 +26,7 @@ public class Product : BaseEntity
     public bool IsAvailable { get; set; }
 
     public int ProductTypeId { get; set; }
-    public ProductType? ProductType { get; set; }
+    public virtual ProductType? ProductType { get; set; }
     public int CategoryId { get; set; }
     public virtual Category? Category { get; set; }
 }

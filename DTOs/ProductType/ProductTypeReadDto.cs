@@ -12,5 +12,7 @@ public class ProductTypeReadDto : BaseDto
     public string Slug { get; set; } = String.Empty;
     [Required]
     public string ImageUrl { get; set; } = String.Empty;
+    [Required]
+    public string CategorySlug { get; set; } = String.Empty;
 
 }

@@ -18,6 +18,6 @@ public class ProductReadDto : BaseDto
     public int Quantity { get; set; }
     [Required]
     public bool IsAvailable { get; set; }
-    public string ProductType { get; set; } = String.Empty;
+    public string ProductTypeName { get; set; } = String.Empty;
     public string CategoryName { get; set; } = String.Empty;
 }
