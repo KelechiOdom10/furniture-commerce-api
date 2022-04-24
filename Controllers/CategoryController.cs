@@ -7,7 +7,7 @@ using API.DTOs.Category;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/category")]
+[Route("api/categories")]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _categoryRepository;
