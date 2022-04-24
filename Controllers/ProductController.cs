@@ -7,7 +7,7 @@ using AutoMapper;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/product")]
+[Route("api/products")]
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _productRepository;
