@@ -31,6 +31,8 @@ public class CommerceProfile : Profile
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0]));
         CreateMap<Product, ProductDetailDto>()
-            .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0])); ;
+            .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0]))
+            .ForMember(dest => dest.CategorySlug, opt => opt.MapFrom(src => src.Category.Slug))
+            .ForMember(dest => dest.ProductTypeSlug, opt => opt.MapFrom(src => src.ProductType.Slug));
     }
 }
