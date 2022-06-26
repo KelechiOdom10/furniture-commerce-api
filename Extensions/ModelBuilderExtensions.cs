@@ -1,3 +1,4 @@
+#nullable disable
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using API.Entities;
@@ -150,7 +151,6 @@ public static class ModelBuilderExtensions
                 CategoryId = 5,
                 CreatedAt = DateTime.Now.AddDays(-300)
             });
-
 
         modelBuilder.Entity<Product>()
             .Property(p => p.Images)

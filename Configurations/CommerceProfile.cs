@@ -1,3 +1,4 @@
+#nullable disable
 using AutoMapper;
 using API.Entities;
 using API.DTOs.ProductType;
