@@ -14,7 +14,7 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public async Task<Category> GetCategoryByIdAsync(int id)
+    public async Task<Category?> GetCategoryByIdAsync(int id)
     {
         var category = await _context.Categories
             .Include(c => c.Products)
@@ -31,7 +31,7 @@ public class CategoryRepository : ICategoryRepository
         return categories;
     }
 
-    public async Task<Category> GetCategoryBySlugAsync(string slug)
+    public async Task<Category?> GetCategoryBySlugAsync(string slug)
     {
         var category = await _context.Categories
             .Include(c => c.Products)
@@ -40,7 +40,7 @@ public class CategoryRepository : ICategoryRepository
         return category;
     }
 
-    public async Task<Category> AddCategoryAsync(Category category)
+    public async Task<Category?> AddCategoryAsync(Category category)
     {
         await _context.Categories.AddAsync(category);
         var result = await SaveAsync();

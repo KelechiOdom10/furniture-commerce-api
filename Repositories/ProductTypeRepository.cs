@@ -23,7 +23,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return productTypes;
     }
 
-    public async Task<ProductType> GetProductTypeByIdAsync(int id)
+    public async Task<ProductType?> GetProductTypeByIdAsync(int id)
     {
         var productType = await _context.ProductTypes
             .Include(p => p.Category)
@@ -32,7 +32,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return productType;
     }
 
-    public async Task<ProductType> GetProductTypeBySlugAsync(string slug)
+    public async Task<ProductType?> GetProductTypeBySlugAsync(string slug)
     {
         var productType = await _context.ProductTypes
             .Include(p => p.Category)
@@ -41,7 +41,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return productType;
     }
 
-    public async Task<ProductType> AddProductTypeAsync(ProductType productType)
+    public async Task<ProductType?> AddProductTypeAsync(ProductType productType)
     {
         await _context.ProductTypes.AddAsync(productType);
         var result = await SaveAsync();
