@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
 using API.Data;
+using API.Extensions;
 using API.Interfaces;
 using API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +13,13 @@ builder.Services.AddDbContext<CommerceDataContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("CommerceDB"));
 });
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAuthManagerRepository, AuthManagerRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -35,7 +41,7 @@ builder.Services.AddCors(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwaggerDoc();
 
 var app = builder.Build();
 
@@ -49,6 +55,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

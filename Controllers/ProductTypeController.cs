@@ -3,12 +3,14 @@ using API.DTOs.ProductType;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/productTypes")]
+[Authorize(Roles = Roles.Admin)]
 public class ProductTypeController : ControllerBase
 {
     private readonly IProductTypeRepository _productTypeRepository;
@@ -21,6 +23,7 @@ public class ProductTypeController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<ProductTypeReadDto>>> GetProductTypes()
     {
         var productTypes = await _productTypeRepository.GetProductTypesAsync();
@@ -28,6 +31,7 @@ public class ProductTypeController : ControllerBase
     }
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<ActionResult<ProductTypeDetailDto>> GetProductType(string slug)
     {
         var productType = await _productTypeRepository.GetProductTypeBySlugAsync(slug);

@@ -3,6 +3,7 @@ using API.Entities;
 using API.DTOs.ProductType;
 using API.DTOs.Product;
 using API.DTOs.Category;
+using API.DTOs.Auth;
 
 namespace API.Configurations;
 
@@ -34,5 +35,8 @@ public class CommerceProfile : Profile
             .ForMember(dest => dest.DefaultImage, opt => opt.MapFrom(src => src.Images.ToArray()[0]))
             .ForMember(dest => dest.CategorySlug, opt => opt.MapFrom(src => src.Category.Slug))
             .ForMember(dest => dest.ProductTypeSlug, opt => opt.MapFrom(src => src.ProductType.Slug));
+
+        CreateMap<User, UserRegisterDto>().ReverseMap();
+        CreateMap<User, UserLoginDto>().ReverseMap();
     }
 }

@@ -3,11 +3,13 @@ using API.Interfaces;
 using API.Entities;
 using AutoMapper;
 using API.DTOs.Category;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/categories")]
+[Authorize(Roles = Roles.Admin)]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _categoryRepository;
@@ -20,6 +22,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<CategoryReadDto>>> GetCategories()
     {
         var categories = await _categoryRepository.GetCategoriesAsync();
@@ -27,6 +30,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{slug}")]
+    [AllowAnonymous]
     public async Task<ActionResult<CategoryDetailDto>> GetCategory(string slug)
     {
         var category = await _categoryRepository.GetCategoryBySlugAsync(slug);
