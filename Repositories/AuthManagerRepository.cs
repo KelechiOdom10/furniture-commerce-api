@@ -57,7 +57,7 @@ public class AuthManagerRepository : IAuthManagerRepository
         return (_user != null && result);
     }
 
-    private async Task<List<Claim>> GetClaims()
+    private Task<List<Claim>> GetClaims()
     {
         var claims = new List<Claim>(){
             new Claim(ClaimTypes.Email, _user!.Email),
@@ -65,6 +65,6 @@ public class AuthManagerRepository : IAuthManagerRepository
             new Claim(ClaimTypes.Role, _user.Role)
         };
 
-        return claims;
+        return Task.FromResult(claims);
     }
 }
