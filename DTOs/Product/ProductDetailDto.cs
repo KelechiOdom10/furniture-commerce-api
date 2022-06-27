@@ -6,9 +6,9 @@ public class ProductDetailDto : ProductReadDto
 {
     public string Description { get; set; } = string.Empty;
     [Required]
-    public string ProductTypeSlug { get; set; } = String.Empty;
+    public string ProductTypeSlug { get; set; } = string.Empty;
     [Required]
-    public string CategorySlug { get; set; } = String.Empty;
+    public string CategorySlug { get; set; } = string.Empty;
     [Required]
     public ICollection<string> Images { get; set; } = new List<string>();
 }
