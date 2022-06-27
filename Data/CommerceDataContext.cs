@@ -9,9 +9,7 @@ public class CommerceDataContext : IdentityDbContext<User>
 {
     public CommerceDataContext(DbContextOptions<CommerceDataContext> options) :
         base(options)
-    {
-        Database.EnsureCreated();
-    }
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

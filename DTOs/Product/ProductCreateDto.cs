@@ -7,15 +7,15 @@ namespace API.DTOs.Product;
 public class ProductCreateDto
 {
     [MaxLength(40)]
-    public string Sku { get; set; } = String.Empty;
+    public string Sku { get; set; } = string.Empty;
     [Required]
-    public string Slug { get; set; } = String.Empty;
+    public string Slug { get; set; } = string.Empty;
     [Required]
-    public string Name { get; set; } = String.Empty;
+    public string Name { get; set; } = string.Empty;
     [Required]
-    public string Title { get; set; } = String.Empty;
+    public string Title { get; set; } = string.Empty;
     [Required]
-    public string Description { get; set; } = String.Empty;
+    public string Description { get; set; } = string.Empty;
     public ICollection<string> Images { get; set; } = new List<string>();
     [Required]
     [DefaultValue(0)]
