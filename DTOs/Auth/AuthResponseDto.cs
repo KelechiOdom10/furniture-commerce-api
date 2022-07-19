@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using API.DTOs.User;
+
 namespace API.DTOs.Auth;
 
 public class AuthResponseDto
 {
-    public string? Email { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public string? Token { get; set; }
+    [Required]
+    public UserReadDto User { get; set; }
+    public string Message { get; init; } = string.Empty;
+    [Required]
+    public string Token { get; set; } = string.Empty;
 }

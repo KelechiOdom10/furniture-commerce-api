@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using API.DTOs.Auth;
+using API.DTOs.User;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
@@ -29,12 +30,14 @@ public class AuthController : ControllerBase
 
     [HttpGet("currentUser")]
     [Authorize]
-    public async Task<ActionResult<string>> GetCurrentUser()
+    public async Task<ActionResult<UserReadDto>> GetCurrentUser()
     {
         var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?
         .Value;
+        Console.Write(email);
         var user = await _userManager.FindByEmailAsync(email);
-        return Ok(user.Email);
+        var userResponse = _mapper.Map<UserReadDto>(user);
+        return Ok(userResponse);
     }
 
     [HttpPost("register")]
@@ -58,11 +61,12 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        var userResponse = _mapper.Map<UserReadDto>(user); 
         var token = await _authManager.GenerateToken(user);
 
         return StatusCode(201, new AuthResponseDto
         {
-            Email = userRegisterDto.Email,
+            User = userResponse,
             Token = token,
             Message = "Successfully signed up!"
         });
@@ -78,11 +82,12 @@ public class AuthController : ControllerBase
         if (!isValidUser) return Unauthorized("Invalid credentials");
 
         var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
+        var userResponse = _mapper.Map<UserReadDto>(user);
         var token = await _authManager.GenerateToken(user);
 
         return Ok(new AuthResponseDto
         {
-            Email = userLoginDto.Email,
+            User = userResponse,
             Token = token,
             Message = "Successfully logged in!"
         });
