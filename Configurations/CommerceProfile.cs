@@ -5,6 +5,7 @@ using API.DTOs.ProductType;
 using API.DTOs.Product;
 using API.DTOs.Category;
 using API.DTOs.Auth;
+using API.DTOs.User;
 
 namespace API.Configurations;
 
@@ -39,5 +40,6 @@ public class CommerceProfile : Profile
 
         CreateMap<User, UserRegisterDto>().ReverseMap();
         CreateMap<User, UserLoginDto>().ReverseMap();
+        CreateMap<User, UserReadDto>().ReverseMap();
     }
 }

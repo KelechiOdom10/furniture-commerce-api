@@ -16,9 +16,8 @@ public class UserRegisterDto
     public string Email { get; set; } = string.Empty;
     [Required]
     [DataType(DataType.Password)]
-    [RegularExpression("(?=^.{6,10}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$", ErrorMessage = "Password must have 1 Uppercase, 1 Lowercase, 1 number, 1 non alphanumeric and at least 6 characters")]
+    [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$", ErrorMessage = "Password must be at least 6 characters long and contain at least one number and one letter")]
     public string Password { get; set; } = string.Empty;
-    [Required]
     public string Role { get; set; } = Roles.User;
 
 }

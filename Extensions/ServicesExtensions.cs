@@ -13,7 +13,11 @@ public static class ServicesExtensions
 {
     public static void ConfigureIdentity(this IServiceCollection services)
     {
-        var builder = services.AddIdentityCore<User>(q => q.User.RequireUniqueEmail = true);
+        var builder = services.AddIdentityCore<User>(q =>
+        {
+            q.User.RequireUniqueEmail = true;
+            q.Password.RequireNonAlphanumeric = false;
+        });
         builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
         builder.AddEntityFrameworkStores<CommerceDataContext>().AddDefaultTokenProviders();
     }
