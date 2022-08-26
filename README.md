@@ -2,13 +2,9 @@
 
 # CommerceAPI
 
-What is this?
----------------------
-* This is the source of Commerce API
-
 What is Commerce API?
 ---------------------
-* It is a simple RESTful API server created with ASP.NET Core 6.0
+* It is a simple RESTful API server created with ASP.NET Core 6.0. This is the accompanying server code to the frontend application that can be found [here](https://github.com/KelechiOdom10/furniture-commerce-frontend)
 
 Introduction
 ---------------------
