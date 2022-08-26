@@ -85,12 +85,14 @@ dotnet ef database update
 dotnet run
 ```
 ## Documentation
+[Link to frontend repository](https://github.com/KelechiOdom10/furniture-commerce-frontend)
 
 Swagger link
 
 ```
 https://localhost:7049/swagger/index.html
 ```
+
 ## Tech Stack
 
 - ASP.NET Core 6.0
