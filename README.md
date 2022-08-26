@@ -99,3 +99,7 @@ https://localhost:7049/swagger/index.html
 - Swagger
 - Redis Cache
 - Stripe Implementation
+
+## Contributing
+
+This is an open source project, and contributions of any kind are welcome and appreciated. Open issues, bugs, and feature requests are all listed on the [issues](https://github.com/KelechiOdom10/furniture-commerce-api/issues) tab and labeled accordingly. Feel free to open bug tickets and make feature requests.
