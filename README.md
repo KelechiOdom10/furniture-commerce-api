@@ -1,14 +1,14 @@
 [![License](https://img.shields.io/github/license/falberthen/ecommerceddd.svg)](LICENSE)
 
-# CommerceAPI
+# Furniture Commerce API
 
-What is Commerce API?
+What is Furniture Commerce API?
 ---------------------
 * It is a simple RESTful API server created with ASP.NET Core 6.0. This is the accompanying server code to the frontend application that can be found [here](https://github.com/KelechiOdom10/furniture-commerce-frontend)
 
 Introduction
 ---------------------
-The goal of this project was to learn C# and .NET Core in a practical "learning by doing" approach. I decided to build an e-commerce API with the core functionalities of any e-commerce platform which will be discussed in a further section below. So far what I have learned includes: 
+The goal of this project was to learn C# and .NET Core in a practical "learning by doing" approach. I decided to build a furniture e-commerce API with the core functionalities of any e-commerce platform which will be discussed in a further section below. So far what I have learned includes: 
 
 -	How to use multiple DbContext to separate business logic with Identities
 -	How to use JWTs token using ASP.NET Identity
